@@ -6,7 +6,8 @@
   "scripts": {
     "compile": "tsc --noEmit",
     "dev": "vite",
-    "build": "vite build"
+    "build": "vite build",
+    "watch": "vite build --watch --mode development"
   },
   "devDependencies": {
     "@types/webextension-polyfill": "^0.10.0",
