@@ -16,7 +16,11 @@ export default defineConfig({
   plugins: [
     webExtension({
       manifest: generateManifest,
-      watchFilePaths: ["package.json", "manifest.json"],
+      browser: process.env.TARGET || "chrome",
+      watchFilePaths: ["package.json", "manifest.json", "background.ts"],
+      webExtConfig: {
+        target: (process.env.TARGET === "firefox") ? "firefox-desktop" : "chromium",
+      }
     }),
   ],
 });

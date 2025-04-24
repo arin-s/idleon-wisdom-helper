@@ -8,27 +8,32 @@
     "96": "icon/96.png",
     "128": "icon/128.png"
   },
-  "{{chrome}}.action": {
-    "default_popup": "src/popup.html"
-  },
-  "{{firefox}}.browser_action": {
-    "default_popup": "src/popup.html"
-  },
   "background": {
     "{{chrome}}.service_worker": "src/background.ts",
-    "{{firefox}}.scripts": ["src/background.ts"]
+    "{{firefox}}.scripts": ["src/background.ts"],
+    "{{firefox}}.persistent": false
   },
   "commands": {
-    "Initial screenshot": {
-      "suggested_key": "Alt+W",
+    "Initial capture": {
+      "suggested_key": {
+        "default": "Alt+W"
+      },
       "description": "Do this before flipping any cards"
     },
     "Capture changes": {
-      "suggested_key": "Alt+Q",
+      "suggested_key": {
+        "default": "Alt+Q"
+      },
       "description": "Captures flipped cards"
     }
   },
   "permissions": [
     "activeTab"
-  ]
+  ],
+  "{{chrome}}.action": {
+    "default_title": "Idleon Wisdom Helper"
+  },
+  "{{firefox}}.browser_action": {
+    "default_title": "Idleon Wisdom Helper"
+  }
 }
