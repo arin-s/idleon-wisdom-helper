@@ -16,13 +16,13 @@
   "commands": {
     "Initial capture": {
       "suggested_key": {
-        "default": "Alt+W"
+        "default": "Alt+Q"
       },
       "description": "Do this before flipping any cards"
     },
     "Capture changes": {
       "suggested_key": {
-        "default": "Alt+Q"
+        "default": "Alt+W"
       },
       "description": "Captures flipped cards"
     }

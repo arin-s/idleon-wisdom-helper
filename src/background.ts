@@ -2,6 +2,8 @@ import browser from 'webextension-polyfill';
 import html from '/wisdomPage.html?url'
 
 console.log(`Don't tell Lava...`); // ;P
+
+// Add "action" listener
 let isFirefox = true;
 try {
   browser.runtime.getBrowserInfo();
@@ -13,12 +15,13 @@ if(isFirefox)
 else
   browser.action.onClicked.addListener(onClick);
 
+// Add hotkey listeners
 browser.commands.onCommand.addListener((command, string) => {
-  if(command === 'Initial screenshot') {
-
+  if(command === 'Initial capture') {
+    console.log("init");
   }
   else if(command === 'Capture changes') {
-    
+    console.log("change");
   }
   const channel = new BroadcastChannel('wisdomImage');
 });
