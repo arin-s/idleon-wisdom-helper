@@ -38,7 +38,7 @@ browser.commands.onCommand.addListener(async (command, tab) => {
   }
   const img = await browser.tabs.captureVisibleTab(tab.windowId, {format: 'png'});
   const channel = new BroadcastChannel('image');
-  channel.postMessage({command: Command.INITIAL_CAPTURE, serializedImage: img})
+  channel.postMessage({command: command, serializedImage: img})
 });
 
 async function onClick() {
