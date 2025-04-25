@@ -1,7 +1,16 @@
 import browser from 'webextension-polyfill';
-import html from '/wisdomPage.html?url'
 
 console.log(`Don't tell Lava...`); // ;P
+
+export enum Command {
+  INITIAL_CAPTURE = 'Initial capture',
+  CAPTURE_CHANGES = 'Capture changes'
+}
+
+export interface ChannelMessage{
+  command: Command,
+  serializedImage: string
+}
 
 // Add "action" listener
 let isFirefox = true;
@@ -16,14 +25,20 @@ else
   browser.action.onClicked.addListener(onClick);
 
 // Add hotkey listeners
-browser.commands.onCommand.addListener((command, string) => {
-  if(command === 'Initial capture') {
+browser.commands.onCommand.addListener(async (command, tab) => {
+  if(!tab?.windowId) {
+    console.error('Hotkey not executed in a tab?');
+    return;
+  }
+  if(command === Command.INITIAL_CAPTURE) {
     console.log("init");
   }
-  else if(command === 'Capture changes') {
+  else if(command === Command.CAPTURE_CHANGES) {
     console.log("change");
   }
-  const channel = new BroadcastChannel('wisdomImage');
+  const img = await browser.tabs.captureVisibleTab(tab.windowId, {format: 'png'});
+  const channel = new BroadcastChannel('image');
+  channel.postMessage({command: Command.INITIAL_CAPTURE, serializedImage: img})
 });
 
 async function onClick() {
@@ -34,7 +49,7 @@ async function onClick() {
     pattern = `chrome-extension://${browser.runtime.id}/*`;
   const tabs = await browser.tabs.query({url: [pattern]});
   if(tabs.length === 0) {
-    browser.windows.create({url: browser.runtime.getURL(html)});
+    browser.windows.create({url: browser.runtime.getURL('src/wisdomPage.html')});
   } else {
     const tab = tabs[0];
     if(!tab.id || !tab.windowId) {
