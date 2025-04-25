@@ -20,7 +20,8 @@ export default defineConfig({
       watchFilePaths: ["package.json", "manifest.json", "background.ts"],
       webExtConfig: {
         target: (process.env.TARGET === "firefox") ? "firefox-desktop" : "chromium",
-      }
+      },
+      additionalInputs: ["src/wisdomPage.html"],
     }),
-  ],
+  ]
 });
