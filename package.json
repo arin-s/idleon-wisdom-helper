@@ -1,5 +1,6 @@
 {
   "name": "Idleon Wisdom Helper",
+  "description": "A browser extension to help you win *that* memory card game in Idleon",
   "private": true,
   "version": "1.0.0",
   "type": "module",
