@@ -16,9 +16,9 @@ It's quite easy, just follow these steps:
 
 
 ## Gimme the download already!
-Link to the Chrome Web Store page
+Link to the Chrome Web Store page (pending...)
 
-Link to the Firefox Addons page
+Link to the Firefox Addons page (pending...)
 
 ## Building (for developers)
 To compile for Chrome, execute `npm run build`  
