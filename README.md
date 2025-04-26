@@ -1,6 +1,10 @@
 # Idleon Wisdom Helper
 A browser extension to help you win *that* memory card game in Idleon.
 
+I didn't get any footage of me using it during wisdom so I used a generic memory card game as an example, but it works just the same.
+
+![example gif](https://github.com/arin-s/idleon-wisdom-helper/blob/main/example.gif?raw=true)
+
 ## How to use
 It's quite easy, just follow these steps:
 1. Open the extension's window by clicking on its icon
@@ -9,6 +13,7 @@ It's quite easy, just follow these steps:
 3. Once you flip two cards, quickly press Alt + W to capture the changes before they flip back down
 4. ???
 5. Profit
+
 
 ## Gimme the download already!
 Link to the Chrome Web Store page
