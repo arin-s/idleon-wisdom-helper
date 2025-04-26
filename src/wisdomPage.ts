@@ -8,11 +8,14 @@ document.addEventListener('DOMContentLoaded', () => {
     return;
   }
   const channel = new BroadcastChannel('image');
+  // Add event listener for messages from service worker
   channel.addEventListener('message', async (event: MessageEvent<ChannelMessage>) => {
     console.log(`Received ${event.data.command} event\nLength: ${event.data.serializedImage.length}`);
     let img = new Image();
     img.src = event.data.serializedImage;
+    // await for img to load
     await img.decode();
+    // If it's the initial capture, we just save the ImageData and draw to screen
     if (event.data.command === Command.INITIAL_CAPTURE) {
       canvas.width = img.width;
       canvas.height = img.height;
@@ -20,6 +23,11 @@ document.addEventListener('DOMContentLoaded', () => {
       initCapture = ctx.getImageData(0, 0, img.width, img.height);
     }
     else if (event.data.command === Command.CAPTURE_CHANGES) {
+      if (!initCapture) {
+        console.warn(`Initial capture hasn't been performed yet!`);
+        return;
+      }
+      // Load the image into a temporary canvas so we can get the ImageData
       let tmpCanvas = new OffscreenCanvas(canvas.width, canvas.height);
       const osCtx = tmpCanvas.getContext('2d');
       if (!osCtx) {
@@ -31,27 +39,20 @@ document.addEventListener('DOMContentLoaded', () => {
       const tmpCapture = osCtx.getImageData(0, 0, tmpCanvas.width, tmpCanvas.height);
       const minWidth = Math.min(initCapture.width, tmpCapture.width);
       const minHeight = Math.min(initCapture.height, tmpCapture.height);
-      // Get the initial, current and temporary imageData
+      // Get the initial, current and temporary ImageData
       const initData = initCapture.data;
       const currCapture = ctx.getImageData(0, 0, img.width, img.height);
       const tmpData = tmpCapture.data;
-      console.log(`currCapture height: ${currCapture.height} width:${currCapture.width}`);
-      console.log(`initCapture height: ${initCapture.height} width:${initCapture.width}`);
-      console.log(`tmpCapture height: ${tmpCapture.height} width:${tmpCapture.width}`);
-      console.log(`tmpCanvas height: ${tmpCanvas.height} width:${tmpCanvas.width}`);
-      console.log(`min height: ${minHeight} width:${minWidth}`);
-      let i = 0;
-      // Each pixel in this image is made up of 4 8-bit integers
+      /* Each pixel is made up of 4 8-bit integers (RGBA format)
+         Row index must be accessed using canvas' own width */
       for (let row = 0; row < minHeight; row++) {
         for (let col = 0; col < minWidth; col++) {
           // Iterate through the pixel
           for (let px = 0; px < 4; px++) {
             // Compare pixels and copy diffs to currCapture
-            if (initData[(row * initCapture.width + col) * 4 + px] !== tmpData[(row * tmpCapture.width + col) * 4 + px])
+            if (initData[(row * initCapture.width + col) * 4 + px] !== tmpData[(row * tmpCapture.width + col) * 4 + px]) {
               currCapture.data[(row * currCapture.width + col) * 4 + px] = tmpData[(row * tmpCapture.width + col) * 4 + px];
-            i++;
-            if(i % 10000 === 0)
-              console.log(`row ${row} col ${col} px ${px} final: ${row * currCapture.width + col * 4 + px}`);
+            }
           }
         }
       }
