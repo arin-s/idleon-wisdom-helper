@@ -17,13 +17,13 @@
       "suggested_key": {
         "default": "Alt+Q"
       },
-      "description": "Do this before flipping any cards"
+      "description": "Initial screenshot"
     },
     "Capture changes": {
       "suggested_key": {
         "default": "Alt+W"
       },
-      "description": "Captures flipped cards"
+      "description": "Capture flipped cards"
     }
   },
   "permissions": [
