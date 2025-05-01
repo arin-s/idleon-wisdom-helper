@@ -34,7 +34,7 @@ async function onClick() {
   const tabs = await browser.tabs.query({ url: [pattern] });
   // If no extension pages are found, open one in a new window
   if (tabs.length === 0) {
-    browser.windows.create({ url: browser.runtime.getURL('src/wisdomPage.html') });
+    browser.windows.create({ url: browser.runtime.getURL('src/extension_page.html') });
   }
   else {
     // If extension pages are found, select the first one

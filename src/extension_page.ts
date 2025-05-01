@@ -1,4 +1,4 @@
-import { ChannelMessage, Command } from "./background";
+import { ChannelMessage, Command } from "./service_worker";
 document.addEventListener('DOMContentLoaded', () => {
   let canvas = document.getElementById('canvas') as HTMLCanvasElement;
   let initCapture: ImageData;
