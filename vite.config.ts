@@ -21,7 +21,7 @@ export default defineConfig({
       webExtConfig: {
         target: (process.env.TARGET === "firefox") ? "firefox-desktop" : "chromium",
       },
-      additionalInputs: ["src/wisdomPage.html"],
+      additionalInputs: ["src/extension_page.html"],
     }),
   ]
 });

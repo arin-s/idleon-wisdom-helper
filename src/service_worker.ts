@@ -1,16 +1,5 @@
 import browser from 'webextension-polyfill';
 
-export enum Command {
-  INITIAL_CAPTURE = 'Initial capture',
-  CAPTURE_CHANGES = 'Capture changes'
-}
-
-// Format for sending data to extension page
-export interface ChannelMessage {
-  command: Command,
-  serializedImage: string
-}
-
 // Find out if we're on firefox or chrome, then add icon click listeners
 let isFirefox = true;
 try {
@@ -22,23 +11,26 @@ if (isFirefox)
   browser.browserAction.onClicked.addListener(onClick);
 else
   browser.action.onClicked.addListener(onClick);
-
 // Runs when the user clicks the extension icon
 async function onClick() {
   let pattern;
+  let tab;
   // Search for open extension pages
   if (isFirefox)
     pattern = `moz-extension://${browser.runtime.id}/*`;
   else
     pattern = `chrome-extension://${browser.runtime.id}/*`;
   const tabs = await browser.tabs.query({ url: [pattern] });
+  if (tabs.length === 0)
+    tab = null;
+  else
+    tab = tabs[0];
   // If no extension pages are found, open one in a new window
-  if (tabs.length === 0) {
+  if (!tab) {
     browser.windows.create({ url: browser.runtime.getURL('src/extension_page.html') });
   }
+  // If extension pages are found, select the first one and draw attention to it
   else {
-    // If extension pages are found, select the first one
-    const tab = tabs[0];
     // If the tabID or windowID is null, log the error and return
     if (!tab.id || !tab.windowId) {
       console.error(`Error obtaining tabId:${tab.id} or windowId:${tab.windowId}`);

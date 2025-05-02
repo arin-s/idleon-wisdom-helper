@@ -1,5 +1,10 @@
-import { ChannelMessage, Command } from "./service_worker";
-document.addEventListener('DOMContentLoaded', () => {
+import { storage } from "webextension-polyfill";
+import { ChannelMessage, Command } from "./types";
+document.addEventListener('DOMContentLoaded', async () => {
+  // Let content_script know a page has opened
+  let uuid = crypto.randomUUID();
+  await storage.local.set({[uuid]: true});
+  // Initialise canvas
   let canvas = document.getElementById('canvas') as HTMLCanvasElement;
   let initCapture: ImageData;
   let ctx = canvas.getContext('2d');
@@ -59,5 +64,8 @@ document.addEventListener('DOMContentLoaded', () => {
       ctx.putImageData(currCapture, 0, 0);
     }
   });
+  // Let content_script know a page has closed
+  window.addEventListener('beforeunload', async () => {
+    await storage.local.remove(uuid);
+  });
 });
-
