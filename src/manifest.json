@@ -38,7 +38,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://*.legendsofidleon.com/*", "https://legendsofidleon.com/*", "http://localhost/*"],
+      "matches": ["https://*.legendsofidleon.com/*", "https://legendsofidleon.com/*"],
       "run_at": "document_start",
       "js": ["src/content_script.ts"]
     }
